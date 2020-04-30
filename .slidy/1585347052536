@@ -1,0 +1,5 @@
+lib/app/modules/usb/usb_module.dart
+lib/app/modules/usb/usb_page.dart
+test/app/modules/usb/usb_page_test.dart
+lib/app/modules/usb/usb_controller.dart
+test/app/modules/usb/usb_controller_test.dart
