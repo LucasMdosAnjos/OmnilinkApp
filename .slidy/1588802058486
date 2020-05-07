@@ -1,0 +1,4 @@
+lib/app/modules/bluetooth/components/cardOption/cardOption_widget.dart
+test/app/modules/bluetooth/components/cardOption/cardOption_widget_test.dart
+lib/app/modules/bluetooth/components/cardOption/cardOption_controller.dart
+test/app/modules/bluetooth/components/cardOption/cardOption_controller_test.dart

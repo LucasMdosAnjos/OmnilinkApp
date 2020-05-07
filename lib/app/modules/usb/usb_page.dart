@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -90,50 +89,54 @@ class _UsbPageState extends ModularState<UsbPage, UsbController>
             },
           ),
           actions: <Widget>[
-            // IconButton(
-            //   icon: Icon(Icons.store),
-            //   onPressed: () {
-            //     controller.ports.clear();
-            //     controller.changeStatus("Connected");
-            //     controller.acionarAnimacao();
-            //   },
-            // ),
-            // IconButton(
-            //   icon: Icon(Icons.usb),
-            //   onPressed: () {
-            //     // controller.serialData.add('MFRMINIT,1,0');
-            //     // controller.serialData
-            //     //     .add('MFRM,Mensagem de teste para o motorista0');
-            //     controller.addPort();
-            //     controller.addSerial("MFRMINIT,0,0");
-            //     controller.addSerial("MFRMINIT,1,0");
-            //     controller.addSerial(
-            //         "MFRM, Atenção motorista a carga é valiosa reduza a sua velocidade.");
-            //     controller.addSerial("MFRMCF");
-            //     controller.addSerial("MRPREV,1");
-            //     controller.addSerial("MRPREV,0");
-            //   },
-            // ),
-            // IconButton(
-            //   icon: Icon(Icons.access_time),
-            //   onPressed: () {
-            //     controller.setClock(!controller.showClock);
-            //   },
-            // ),
+            IconButton(
+              icon: Icon(Icons.store),
+              onPressed: () {
+                controller.ports.clear();
+                controller.changeStatus("Connected");
+                controller.acionarAnimacao();
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.usb),
+              onPressed: () {
+                // controller.serialData.add('MFRMINIT,1,0');
+                // controller.serialData
+                //     .add('MFRM,Mensagem de teste para o motorista0');
+                controller.addPort();
+                controller.addSerial("MFRMINIT,0,0");
+                controller.addSerial("MFRMINIT,1,0");
+                controller.addSerial(
+                    "MFRM, Atenção motorista a carga é valiosa reduza a sua velocidade.");
+                controller.addSerial("MFRMCF");
+                controller.addSerial("MRPREV,1");
+                controller.addSerial("MRPREV,0");
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.access_time),
+              onPressed: () {
+                controller.setClock(!controller.showClock);
+              },
+            ),
           ],
         ),
         body: Stack(
           children: <Widget>[
             Observer(builder: (_) {
               return Container(
-                decoration:  BoxDecoration(
-                    image: (controller.expandPanelOptions && controller.status == 'Connected')? DecorationImage(
-                        colorFilter:
-                            ColorFilter.mode(Colors.black.withOpacity(0.6), BlendMode.darken),
-                        image:  AssetImage("assets/bkg_fundo.png"),
-                        fit: BoxFit.cover) : DecorationImage(
-                        image:  AssetImage("assets/bkg_fundo.png"),
-                        fit: BoxFit.cover)),
+                decoration: BoxDecoration(
+                    image: (controller.expandPanelOptions &&
+                            controller.status == 'Connected')
+                        ? DecorationImage(
+                            colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(0.6),
+                                BlendMode.darken),
+                            image: AssetImage("assets/bkg_fundo.png"),
+                            fit: BoxFit.cover)
+                        : DecorationImage(
+                            image: AssetImage("assets/bkg_fundo.png"),
+                            fit: BoxFit.cover)),
               );
             }),
             Center(child: Observer(builder: (_) {
@@ -204,7 +207,8 @@ class _UsbPageState extends ModularState<UsbPage, UsbController>
                                       return Container(
                                         child: Theme(
                                           data: Theme.of(context).copyWith(
-                                              cardColor: Colors.white.withOpacity(0.16)),
+                                              cardColor: Colors.white
+                                                  .withOpacity(0.16)),
                                           child: ExpansionPanelList(
                                             children: [
                                               ExpansionPanel(

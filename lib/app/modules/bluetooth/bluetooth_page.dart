@@ -1,5 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:serial_terminal/app/modules/bluetooth/components/cardOption/cardOption_widget.dart';
 import 'bluetooth_controller.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -18,18 +21,191 @@ class _BluetoothPageState
   @override
   void dispose() {
     super.dispose();
-    controller.disposeObjects();
+    controller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        backgroundColor: Colors.blue[800],
+        title: Text(
+          widget.title,
+          style: TextStyle(fontSize: 25.0),
+        ),
+        centerTitle: true,
       ),
       body: Observer(builder: (_) {
-        return Column(
-          children: controller.devices.map((f) => f).toList(),
+        return Stack(
+          children: <Widget>[
+            (controller.showLoading)
+                ? Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.1),
+                        backgroundBlendMode: BlendMode.darken),
+                  )
+                : Container(
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("assets/bkg_fundo.png"),
+                            fit: BoxFit.cover)),
+                  ),
+            (!controller.showLoading)
+                ? Column(
+                    children: <Widget>[
+                      Column(
+                        children: controller.devices.map((f) => f).toList(),
+                      ),
+                      Observer(builder: (_) {
+                        if (controller.connectedDevice != "") {
+                          return Column(
+                            children: <Widget>[
+                              Container(
+                                child: Theme(
+                                  data: Theme.of(context).copyWith(
+                                      cardColor:
+                                          Colors.white.withOpacity(0.16)),
+                                  child: ExpansionPanelList(
+                                    children: [
+                                      ExpansionPanel(
+                                          body: Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: AssetImage(
+                                                      'assets/bkg_fundo.png'),
+                                                  fit: BoxFit.cover),
+                                            ),
+                                            // color: Color.fromRGBO(
+                                            //     204, 204, 204, 1.0),
+                                            child: Column(
+                                              children: <Widget>[
+                                                SizedBox(
+                                                  height: 25.0,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    CardOptionWidget(
+                                                      option: 0,
+                                                    ),
+                                                    CardOptionWidget(
+                                                      option: 1,
+                                                    ),
+                                                    CardOptionWidget(
+                                                      option: 2,
+                                                    ),
+                                                    CardOptionWidget(
+                                                      option: 3,
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                    CardOptionWidget(
+                                                      option: 4,
+                                                    ),
+                                                    CardOptionWidget(
+                                                      option: 5,
+                                                    ),
+                                                    CardOptionWidget(
+                                                      option: 6,
+                                                    ),
+                                                    CardOptionWidget(
+                                                      option: 7,
+                                                    ),
+                                                  ],
+                                                ),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: Container(
+                                                    margin: EdgeInsets.only(
+                                                        right: 15.0),
+                                                    width: 180.0,
+                                                    height: 80.0,
+                                                    child: Image.asset(
+                                                      'assets/omnilink.png',
+                                                      fit: BoxFit.contain,
+                                                      color: Colors.blue[900],
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          headerBuilder: (BuildContext context,
+                                              bool isExpanded) {
+                                            return Container(
+                                              padding: EdgeInsets.all(10),
+                                              alignment: Alignment.center,
+                                              child: AutoSizeText(
+                                                  (isExpanded ||
+                                                          controller
+                                                                  .selectedOption ==
+                                                              15)
+                                                      ? "Clique em algum botão abaixo para selecionar um tópico."
+                                                      : "${controller.mapOptions[controller.selectedOption]}",
+                                                  maxLines: 1,
+                                                  style: GoogleFonts.robotoMono(
+                                                      fontSize: 19.5,
+                                                      letterSpacing: 2.0,
+                                                      color: Colors.lightGreen,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                            );
+                                          },
+                                          canTapOnHeader: true,
+                                          isExpanded:
+                                              controller.expandPanelOptions),
+                                    ],
+                                    animationDuration:
+                                        Duration(milliseconds: 1300),
+                                    expansionCallback: (int item, bool status) {
+                                      controller.setPanelExpand();
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        } else {
+                          return Container();
+                        }
+                      }),
+                      Observer(builder: (_) {
+                        return Expanded(
+                          child: AnimatedOpacity(
+                            curve: Curves.decelerate,
+                            opacity: controller.widgets.isEmpty ? 0.0 : 1.0,
+                            child: SingleChildScrollView(
+                              controller: controller.scroll,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: Column(
+                                  children: controller.widgets
+                                      .map((widget) => widget)
+                                      .toList(),
+                                ),
+                              ),
+                            ),
+                            duration: Duration(seconds: 5),
+                          ),
+                        );
+                      }),
+                    ],
+                  )
+                : Center(
+                    child: CircularProgressIndicator(),
+                  ),
+          ],
         );
       }),
     );
