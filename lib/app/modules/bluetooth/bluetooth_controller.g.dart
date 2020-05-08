@@ -9,6 +9,60 @@ part of 'bluetooth_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$BluetoothController on _BluetoothControllerBase, Store {
+  final _$contextAtom = Atom(name: '_BluetoothControllerBase.context');
+
+  @override
+  BuildContext get context {
+    _$contextAtom.context.enforceReadPolicy(_$contextAtom);
+    _$contextAtom.reportObserved();
+    return super.context;
+  }
+
+  @override
+  set context(BuildContext value) {
+    _$contextAtom.context.conditionallyRunInAction(() {
+      super.context = value;
+      _$contextAtom.reportChanged();
+    }, _$contextAtom, name: '${_$contextAtom.name}_set');
+  }
+
+  final _$writeCharacAtom = Atom(name: '_BluetoothControllerBase.writeCharac');
+
+  @override
+  BluetoothCharacteristic get writeCharac {
+    _$writeCharacAtom.context.enforceReadPolicy(_$writeCharacAtom);
+    _$writeCharacAtom.reportObserved();
+    return super.writeCharac;
+  }
+
+  @override
+  set writeCharac(BluetoothCharacteristic value) {
+    _$writeCharacAtom.context.conditionallyRunInAction(() {
+      super.writeCharac = value;
+      _$writeCharacAtom.reportChanged();
+    }, _$writeCharacAtom, name: '${_$writeCharacAtom.name}_set');
+  }
+
+  final _$ultimaRequisicaoMsgFormatadaAtom =
+      Atom(name: '_BluetoothControllerBase.ultimaRequisicaoMsgFormatada');
+
+  @override
+  String get ultimaRequisicaoMsgFormatada {
+    _$ultimaRequisicaoMsgFormatadaAtom.context
+        .enforceReadPolicy(_$ultimaRequisicaoMsgFormatadaAtom);
+    _$ultimaRequisicaoMsgFormatadaAtom.reportObserved();
+    return super.ultimaRequisicaoMsgFormatada;
+  }
+
+  @override
+  set ultimaRequisicaoMsgFormatada(String value) {
+    _$ultimaRequisicaoMsgFormatadaAtom.context.conditionallyRunInAction(() {
+      super.ultimaRequisicaoMsgFormatada = value;
+      _$ultimaRequisicaoMsgFormatadaAtom.reportChanged();
+    }, _$ultimaRequisicaoMsgFormatadaAtom,
+        name: '${_$ultimaRequisicaoMsgFormatadaAtom.name}_set');
+  }
+
   final _$valueAtom = Atom(name: '_BluetoothControllerBase.value');
 
   @override
@@ -167,15 +221,26 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
     }, _$expandPanelOptionsAtom, name: '${_$expandPanelOptionsAtom.name}_set');
   }
 
-  final _$disposeAsyncAction = AsyncAction('dispose');
+  final _$updateWidgetsAsyncAction = AsyncAction('updateWidgets');
 
   @override
-  Future<void> dispose() {
-    return _$disposeAsyncAction.run(() => super.dispose());
+  Future<void> updateWidgets() {
+    return _$updateWidgetsAsyncAction.run(() => super.updateWidgets());
   }
 
   final _$_BluetoothControllerBaseActionController =
       ActionController(name: '_BluetoothControllerBase');
+
+  @override
+  void setContext(BuildContext ctx) {
+    final _$actionInfo =
+        _$_BluetoothControllerBaseActionController.startAction();
+    try {
+      return super.setContext(ctx);
+    } finally {
+      _$_BluetoothControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void addWidgetsDevices(List<ScanResult> results) {
@@ -222,17 +287,6 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
   }
 
   @override
-  void updateWidgets() {
-    final _$actionInfo =
-        _$_BluetoothControllerBaseActionController.startAction();
-    try {
-      return super.updateWidgets();
-    } finally {
-      _$_BluetoothControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void changeSegmentedOption(int option) {
     final _$actionInfo =
         _$_BluetoothControllerBaseActionController.startAction();
@@ -246,7 +300,7 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
   @override
   String toString() {
     final string =
-        'value: ${value.toString()},devices: ${devices.toString()},connectedDevice: ${connectedDevice.toString()},resultDevice: ${resultDevice.toString()},showLoading: ${showLoading.toString()},selectedOption: ${selectedOption.toString()},widgets: ${widgets.toString()},serialData: ${serialData.toString()},expandPanelOptions: ${expandPanelOptions.toString()}';
+        'context: ${context.toString()},writeCharac: ${writeCharac.toString()},ultimaRequisicaoMsgFormatada: ${ultimaRequisicaoMsgFormatada.toString()},value: ${value.toString()},devices: ${devices.toString()},connectedDevice: ${connectedDevice.toString()},resultDevice: ${resultDevice.toString()},showLoading: ${showLoading.toString()},selectedOption: ${selectedOption.toString()},widgets: ${widgets.toString()},serialData: ${serialData.toString()},expandPanelOptions: ${expandPanelOptions.toString()}';
     return '{$string}';
   }
 }

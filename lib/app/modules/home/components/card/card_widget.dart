@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,11 +12,40 @@ class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
+      onTap: () async {
         if(text == "USB SERIAL"){
               Modular.to.pushNamed('/usb');
             }else{
-              Modular.to.pushNamed('/bluetooth');
+              FlutterBlue flutterBlue =  FlutterBlue.instance;
+              flutterBlue.isOn.then((value){
+                if(value){
+                  Modular.to.pushNamed('/bluetooth');
+                }else{
+                  showCupertinoDialog(context: context, builder: (_){
+                    return CupertinoAlertDialog(
+                      title: Text('Erro',style: GoogleFonts.sourceCodePro(
+                        wordSpacing: 1.5,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18.0
+                      ),),
+                      content: Text('Ative o Bluetooth para navegar até a seção desejada.',
+                      style: GoogleFonts.sourceCodePro(
+                        wordSpacing: 1.5,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w300
+                      ),),
+                      actions: <Widget>[
+                        FlatButton(
+                          onPressed: (){   
+                            Modular.to.pop();
+                          }, 
+                          child: Text('OK'),
+                        ),
+                      ],
+                    );
+                  });
+                }
+              });
             }
       },
           child: Card(

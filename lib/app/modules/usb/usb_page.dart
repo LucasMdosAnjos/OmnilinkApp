@@ -89,36 +89,36 @@ class _UsbPageState extends ModularState<UsbPage, UsbController>
             },
           ),
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.store),
-              onPressed: () {
-                controller.ports.clear();
-                controller.changeStatus("Connected");
-                controller.acionarAnimacao();
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.usb),
-              onPressed: () {
-                // controller.serialData.add('MFRMINIT,1,0');
-                // controller.serialData
-                //     .add('MFRM,Mensagem de teste para o motorista0');
-                controller.addPort();
-                controller.addSerial("MFRMINIT,0,0");
-                controller.addSerial("MFRMINIT,1,0");
-                controller.addSerial(
-                    "MFRM, Atenção motorista a carga é valiosa reduza a sua velocidade.");
-                controller.addSerial("MFRMCF");
-                controller.addSerial("MRPREV,1");
-                controller.addSerial("MRPREV,0");
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.access_time),
-              onPressed: () {
-                controller.setClock(!controller.showClock);
-              },
-            ),
+            // IconButton(
+            //   icon: Icon(Icons.store),
+            //   onPressed: () {
+            //     controller.ports.clear();
+            //     controller.changeStatus("Connected");
+            //     controller.acionarAnimacao();
+            //   },
+            // ),
+            // IconButton(
+            //   icon: Icon(Icons.usb),
+            //   onPressed: () {
+            //     // controller.serialData.add('MFRMINIT,1,0');
+            //     // controller.serialData
+            //     //     .add('MFRM,Mensagem de teste para o motorista0');
+            //     controller.addPort();
+            //     controller.addSerial("MFRMINIT,0,0");
+            //     controller.addSerial("MFRMINIT,1,0");
+            //     controller.addSerial(
+            //         "MFRM, Atenção motorista a carga é valiosa reduza a sua velocidade.");
+            //     controller.addSerial("MFRMCF");
+            //     controller.addSerial("MRPREV,1");
+            //     controller.addSerial("MRPREV,0");
+            //   },
+            // ),
+            // IconButton(
+            //   icon: Icon(Icons.access_time),
+            //   onPressed: () {
+            //     controller.setClock(!controller.showClock);
+            //   },
+            // ),
           ],
         ),
         body: Stack(
