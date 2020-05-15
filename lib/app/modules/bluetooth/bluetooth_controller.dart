@@ -486,6 +486,7 @@ abstract class _BluetoothControllerBase with Store {
                     .split(',')[1];
                 int indice = int.tryParse(ultimaRequisicao.split(',')[1]);
                 widgets.clear();
+                serialData.clear();
                 Modular.to.pushNamed('/formMsgFormatada', arguments: {
                   'titulo': titulo,
                   'formFields': formulario,
