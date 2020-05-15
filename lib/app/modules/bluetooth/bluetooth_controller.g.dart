@@ -43,24 +43,22 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
     }, _$writeCharacAtom, name: '${_$writeCharacAtom.name}_set');
   }
 
-  final _$ultimaRequisicaoMsgFormatadaAtom =
-      Atom(name: '_BluetoothControllerBase.ultimaRequisicaoMsgFormatada');
+  final _$ultimaRequisicaoAtom =
+      Atom(name: '_BluetoothControllerBase.ultimaRequisicao');
 
   @override
-  String get ultimaRequisicaoMsgFormatada {
-    _$ultimaRequisicaoMsgFormatadaAtom.context
-        .enforceReadPolicy(_$ultimaRequisicaoMsgFormatadaAtom);
-    _$ultimaRequisicaoMsgFormatadaAtom.reportObserved();
-    return super.ultimaRequisicaoMsgFormatada;
+  String get ultimaRequisicao {
+    _$ultimaRequisicaoAtom.context.enforceReadPolicy(_$ultimaRequisicaoAtom);
+    _$ultimaRequisicaoAtom.reportObserved();
+    return super.ultimaRequisicao;
   }
 
   @override
-  set ultimaRequisicaoMsgFormatada(String value) {
-    _$ultimaRequisicaoMsgFormatadaAtom.context.conditionallyRunInAction(() {
-      super.ultimaRequisicaoMsgFormatada = value;
-      _$ultimaRequisicaoMsgFormatadaAtom.reportChanged();
-    }, _$ultimaRequisicaoMsgFormatadaAtom,
-        name: '${_$ultimaRequisicaoMsgFormatadaAtom.name}_set');
+  set ultimaRequisicao(String value) {
+    _$ultimaRequisicaoAtom.context.conditionallyRunInAction(() {
+      super.ultimaRequisicao = value;
+      _$ultimaRequisicaoAtom.reportChanged();
+    }, _$ultimaRequisicaoAtom, name: '${_$ultimaRequisicaoAtom.name}_set');
   }
 
   final _$valueAtom = Atom(name: '_BluetoothControllerBase.value');
@@ -300,7 +298,7 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
   @override
   String toString() {
     final string =
-        'context: ${context.toString()},writeCharac: ${writeCharac.toString()},ultimaRequisicaoMsgFormatada: ${ultimaRequisicaoMsgFormatada.toString()},value: ${value.toString()},devices: ${devices.toString()},connectedDevice: ${connectedDevice.toString()},resultDevice: ${resultDevice.toString()},showLoading: ${showLoading.toString()},selectedOption: ${selectedOption.toString()},widgets: ${widgets.toString()},serialData: ${serialData.toString()},expandPanelOptions: ${expandPanelOptions.toString()}';
+        'context: ${context.toString()},writeCharac: ${writeCharac.toString()},ultimaRequisicao: ${ultimaRequisicao.toString()},value: ${value.toString()},devices: ${devices.toString()},connectedDevice: ${connectedDevice.toString()},resultDevice: ${resultDevice.toString()},showLoading: ${showLoading.toString()},selectedOption: ${selectedOption.toString()},widgets: ${widgets.toString()},serialData: ${serialData.toString()},expandPanelOptions: ${expandPanelOptions.toString()}';
     return '{$string}';
   }
 }

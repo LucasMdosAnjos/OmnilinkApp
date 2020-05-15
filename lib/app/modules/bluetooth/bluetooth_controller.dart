@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_blue/flutter_blue.dart';
@@ -21,7 +20,7 @@ abstract class _BluetoothControllerBase with Store {
   @observable
   BluetoothCharacteristic writeCharac;
   @observable
-  String ultimaRequisicaoMsgFormatada = "";
+  String ultimaRequisicao = "";
   @observable
   int value = 0;
   @observable
@@ -138,15 +137,11 @@ abstract class _BluetoothControllerBase with Store {
                         '2456E1B9-26E2-8F83-E744-F34F01E9D703') {
                       await c.setNotifyValue(true);
                       c.value.listen((value) async {
-                        if (writeCharac != null) {
-                          print(serialData.length);
-                          print(widgets.length);
-                          serialData.add(utf8.decode(value));
-                          await updateWidgets();
-                          print(serialData.length);
-                          print(widgets.length);
-                          print("--------------/------------");
-                        }
+                        serialData.add(utf8.decode(value));
+                        await updateWidgets();
+                        print(value);
+                        print(utf8.decode(value));
+                        print("--------------/------------");
                       });
                     }
                   }
@@ -186,65 +181,122 @@ abstract class _BluetoothControllerBase with Store {
 
   @action
   Future<void> updateWidgets() async {
-    widgets.clear();
     if (selectedOption != 15) {
       switch (selectedOption) {
         case 0:
-          for (int i = 0; i < serialData.length; i++) {
-            String line = serialData[i];
-            if (line.contains("MFRMINIT")) {
-              if (line == "MFRMINIT,0,0") {
-                widgets.add(Card(
-                  elevation: 6.0,
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 30.0,
-                    horizontal: 24.0,
-                  ),
-                  child: Container(
-                    height: 160.0,
-                    width: 560.0,
-                    child: Stack(
-                      alignment: Alignment.topCenter,
-                      children: <Widget>[
-                        Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                                begin: Alignment.bottomLeft,
-                                end: Alignment.topRight,
-                                stops: [
-                                  0.05,
-                                  0.1,
-                                  0.7,
-                                  0.9,
-                                  1
-                                ],
-                                colors: [
-                                  Colors.blue,
-                                  Colors.blue[400],
-                                  Colors.blue[300],
-                                  Colors.blue[400],
-                                  Colors.blue,
-                                ]),
+          if (serialData
+                  .where((element) => element.contains('MFRMCI'))
+                  .length ==
+              0) {
+            widgets.clear();
+            for (int i = 0; i < serialData.length; i++) {
+              String line = serialData[i];
+              if (line.contains("MFRMINIT")) {
+                if (line == "MFRMINIT,0,0") {
+                  widgets.add(Card(
+                    elevation: 6.0,
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 30.0,
+                      horizontal: 24.0,
+                    ),
+                    child: Container(
+                      height: 160.0,
+                      width: 560.0,
+                      child: Stack(
+                        alignment: Alignment.topCenter,
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                  begin: Alignment.bottomLeft,
+                                  end: Alignment.topRight,
+                                  stops: [
+                                    0.05,
+                                    0.1,
+                                    0.7,
+                                    0.9,
+                                    1
+                                  ],
+                                  colors: [
+                                    Colors.blue,
+                                    Colors.blue[400],
+                                    Colors.blue[300],
+                                    Colors.blue[400],
+                                    Colors.blue,
+                                  ]),
+                            ),
                           ),
-                        ),
-                        Transform.translate(
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(180.0),
-                                  border: Border.all(
-                                      color: Colors.red, width: 1.5)),
-                              child: Icon(
-                                Icons.trending_down,
-                                size: 60,
-                                color: Colors.red,
-                              )),
-                          offset: Offset(15, -25),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
+                          Transform.translate(
+                            child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(180.0),
+                                    border: Border.all(
+                                        color: Colors.red, width: 1.5)),
+                                child: Icon(
+                                  Icons.trending_down,
+                                  size: 60,
+                                  color: Colors.red,
+                                )),
+                            offset: Offset(15, -25),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text(
+                                "Central para envio de mensagens formatadas não configurada.",
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.robotoMono(
+                                    fontSize: 18.5,
+                                    letterSpacing: 2.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ));
+                } else {
+                  int num = int.tryParse(line.split(',')[1]);
+                  int indice = int.tryParse(line.split(',')[2]);
+                  ultimaRequisicao = "MFRM,$indice";
+                  showDialog();
+                  widgets.add(Card(
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 30.0,
+                      horizontal: 24.0,
+                    ),
+                    elevation: 6.0,
+                    child: Container(
+                      height: 160.0,
+                      width: 560.0,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.bottomLeft,
+                            end: Alignment.topRight,
+                            stops: [
+                              0.05,
+                              0.1,
+                              0.7,
+                              0.9,
+                              1
+                            ],
+                            colors: [
+                              Colors.blue,
+                              Colors.blue[400],
+                              Colors.blue[300],
+                              Colors.blue[400],
+                              Colors.blue,
+                            ]),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              "Central para envio de mensagens formatadas não configurada.",
+                              "Número de mensagens formatadas no veículo: $num.\nÍndice da mensagem: $indice",
                               textAlign: TextAlign.center,
                               style: GoogleFonts.robotoMono(
                                   fontSize: 18.5,
@@ -253,28 +305,22 @@ abstract class _BluetoothControllerBase with Store {
                                   fontWeight: FontWeight.w400),
                             ),
                           ),
-                        )
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ));
-              } else {
-                int num = int.tryParse(line.split(',')[1]);
-                int indice = int.tryParse(line.split(',')[2]);
-                if ('MFRM,$indice' != ultimaRequisicaoMsgFormatada) {
-                  await writeCharac.write(utf8.encode('MFRM,$indice'));
-                  ultimaRequisicaoMsgFormatada = 'MFRM,$indice';
+                  ));
                 }
-                widgets.add(Card(
+              }
+              if (line.contains("MFRM,")) {
+                String titulo = line.split(',')[1].trim();
+                int indiceMensagem = int.parse(ultimaRequisicao.split(',')[1]);
+                widgets.add(Container(
                   margin: const EdgeInsets.symmetric(
                     vertical: 30.0,
                     horizontal: 24.0,
                   ),
-                  elevation: 6.0,
-                  child: Container(
-                    height: 160.0,
-                    width: 560.0,
-                    decoration: BoxDecoration(
+                  width: 600,
+                  decoration: BoxDecoration(
                       gradient: LinearGradient(
                           begin: Alignment.bottomLeft,
                           end: Alignment.topRight,
@@ -286,43 +332,118 @@ abstract class _BluetoothControllerBase with Store {
                             1
                           ],
                           colors: [
-                            Colors.blue,
-                            Colors.blue[400],
-                            Colors.blue[300],
-                            Colors.blue[400],
-                            Colors.blue,
+                            Colors.yellow,
+                            Colors.yellow[300],
+                            Colors.yellow[200],
+                            Colors.yellow[300],
+                            Colors.yellow,
                           ]),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Número de mensagens formatadas no veículo: $num.\nÍndice da mensagem: $indice",
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.robotoMono(
-                                fontSize: 18.5,
-                                letterSpacing: 2.0,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w400),
-                          ),
+                      borderRadius: BorderRadius.circular(8.0)),
+                  child: Column(
+                    children: <Widget>[
+                      Transform.translate(
+                        child: Container(
+                            padding: EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(180.0),
+                                border: Border.all(
+                                    color: Colors.green, width: 1.5)),
+                            child: Icon(
+                              Icons.email,
+                              size: 60,
+                              color: Colors.blue,
+                            )),
+                        offset: Offset(15, -40),
+                      ),
+                      Text(
+                        'Título da Mensagem Formatada:',
+                        style: GoogleFonts.robotoMono(
+                            fontSize: 20.0,
+                            letterSpacing: 2.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 25.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '$titulo',
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.robotoMono(
+                              fontSize: 23.0,
+                              letterSpacing: 2.0,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w400),
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        height: 25.0,
+                      ),
+                      RaisedButton(
+                        color: Colors.blue[800],
+                        onPressed: () {
+                          showCupertinoDialog(
+                              context: context,
+                              builder: (_) {
+                                return CupertinoAlertDialog(
+                                  title: Text(
+                                    'Solicitação',
+                                    style: GoogleFonts.sourceCodePro(
+                                        wordSpacing: 1.5,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 18.0),
+                                  ),
+                                  content: Text(
+                                    'Solicitar campos do formulário?',
+                                    style: GoogleFonts.sourceCodePro(
+                                        wordSpacing: 1.5,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      onPressed: () {
+                                        Modular.to.pop();
+                                      },
+                                      child: Text(
+                                        'CANCELAR',
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                    ),
+                                    FlatButton(
+                                      onPressed: () {
+                                        serialData.clear();
+                                        widgets.clear();
+                                        writeCharac.write(utf8.encode(
+                                            'MFRMDATA,$indiceMensagem'));
+                                        Modular.to.pop();
+                                      },
+                                      child: Text(
+                                        'OK',
+                                        style: TextStyle(color: Colors.blue),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                        child: Text('Solicitar formulário'),
+                      ),
+                    ],
                   ),
                 ));
               }
             }
-            if (line.contains("MFRM,")) {
-              String titulo = line.split(',')[1].trim();
-              int indiceMensagem =
-                  int.parse(ultimaRequisicaoMsgFormatada.split(',')[1]);
+            scroll.jumpTo(scroll.position.maxScrollExtent + 1500);
+          } else {
+            List<String> formulario = serialData
+                .where((element) => element.contains("MFRMCN"))
+                .toList();
+            if (widgets.isEmpty) {
               widgets.add(Container(
-                margin: const EdgeInsets.symmetric(
-                  vertical: 30.0,
-                  horizontal: 24.0,
-                ),
+                padding: EdgeInsets.all(35.0),
                 width: 600,
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -336,295 +457,45 @@ abstract class _BluetoothControllerBase with Store {
                           1
                         ],
                         colors: [
-                          Colors.yellow,
-                          Colors.yellow[300],
-                          Colors.yellow[200],
-                          Colors.yellow[300],
-                          Colors.yellow,
+                          Colors.blueAccent[400],
+                          Colors.blueAccent,
+                          Colors.blueAccent,
+                          Colors.blueAccent,
+                          Colors.blueAccent[400],
                         ]),
                     borderRadius: BorderRadius.circular(8.0)),
-                child: Column(
-                  children: <Widget>[
-                    Transform.translate(
-                      child: Container(
-                          padding: EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(180.0),
-                              border:
-                                  Border.all(color: Colors.green, width: 1.5)),
-                          child: Icon(
-                            Icons.email,
-                            size: 60,
-                            color: Colors.blue,
-                          )),
-                      offset: Offset(15, -40),
-                    ),
-                    Text(
-                      'Título da Mensagem Formatada:',
-                      style: GoogleFonts.robotoMono(
-                          fontSize: 20.0,
-                          letterSpacing: 2.0,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 25.0,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        '$titulo',
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.robotoMono(
-                            fontSize: 23.0,
-                            letterSpacing: 2.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 25.0,
-                    ),
-                    RaisedButton(
-                      color: Colors.blue[800],
-                      onPressed: () {
-                        showCupertinoDialog(
-                            context: context,
-                            builder: (_) {
-                              return CupertinoAlertDialog(
-                                title: Text(
-                                  'Solicitação',
-                                  style: GoogleFonts.sourceCodePro(
-                                      wordSpacing: 1.5,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 18.0),
-                                ),
-                                content: Text(
-                                  'Solicitar campos do formulário?',
-                                  style: GoogleFonts.sourceCodePro(
-                                      wordSpacing: 1.5,
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w300),
-                                ),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    onPressed: () {
-                                      Modular.to.pop();
-                                    },
-                                    child: Text(
-                                      'CANCELAR',
-                                      style: TextStyle(color: Colors.red),
-                                    ),
-                                  ),
-                                  FlatButton(
-                                    onPressed: () {
-                                      writeCharac.write(utf8
-                                          .encode('MFRMDATA,$indiceMensagem'));
-                                      Modular.to.pop();
-                                    },
-                                    child: Text(
-                                      'OK',
-                                      style: TextStyle(color: Colors.blue),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            });
-                      },
-                      child: Text('Solicitar formulário'),
-                    ),
-                  ],
+                child: Center(
+                  child: Text(
+                    'Carregando dados do formulário.\nAguarde.',
+                    style: GoogleFonts.robotoMono(
+                        fontSize: 20.0,
+                        letterSpacing: 2.0,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500),
+                  ),
                 ),
               ));
             }
-            if (line == ('MFRMCF')) {
-              widgets.add(Container(
-                margin: const EdgeInsets.symmetric(
-                  vertical: 30.0,
-                  horizontal: 24.0,
-                ),
-                width: 600,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight,
-                        stops: [
-                          0.05,
-                          0.1,
-                          0.7,
-                          0.9,
-                          1
-                        ],
-                        colors: [
-                          Colors.lightGreen,
-                          Colors.lightGreen[400],
-                          Colors.lightGreen[200],
-                          Colors.lightGreen[300],
-                          Colors.lightGreen,
-                        ]),
-                    borderRadius: BorderRadius.circular(8.0)),
-                child: Column(
-                  children: <Widget>[
-                    Transform.translate(
-                      child: Container(
-                          padding: EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(180.0),
-                              border:
-                                  Border.all(color: Colors.red, width: 2.5)),
-                          child: Icon(
-                            Icons.warning,
-                            size: 60,
-                            color: Colors.blue,
-                          )),
-                      offset: Offset(15, -40),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Fim do envio de todos os campos da Mensagem.',
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.robotoMono(
-                            fontSize: 23.0,
-                            letterSpacing: 2.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 25.0,
-                    ),
-                  ],
-                ),
-              ));
-            }
-            if (line == "MRPREV,0") {
-              widgets.add(Container(
-                width: 600,
-                margin: const EdgeInsets.symmetric(
-                  vertical: 30.0,
-                  horizontal: 24.0,
-                ),
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight,
-                        stops: [
-                          0.05,
-                          0.1,
-                          0.7,
-                          0.9,
-                          1
-                        ],
-                        colors: [
-                          Colors.lightGreen,
-                          Colors.lightGreen[400],
-                          Colors.lightGreen[200],
-                          Colors.lightGreen[300],
-                          Colors.lightGreen,
-                        ]),
-                    borderRadius: BorderRadius.circular(8.0)),
-                child: Column(
-                  children: <Widget>[
-                    Transform.translate(
-                      child: Container(
-                          padding: EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(180.0),
-                              border:
-                                  Border.all(color: Colors.red, width: 2.5)),
-                          child: Icon(
-                            Icons.warning,
-                            size: 60,
-                            color: Colors.blue,
-                          )),
-                      offset: Offset(15, -40),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Não há mais mensagens predefinidas.',
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.robotoMono(
-                            fontSize: 23.0,
-                            letterSpacing: 2.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 25.0,
-                    ),
-                  ],
-                ),
-              ));
-            }
-            if (line == "MRPREV,1") {
-              widgets.add(Container(
-                width: 600,
-                margin: const EdgeInsets.symmetric(
-                  vertical: 30.0,
-                  horizontal: 24.0,
-                ),
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.bottomLeft,
-                        end: Alignment.topRight,
-                        stops: [
-                          0.05,
-                          0.1,
-                          0.7,
-                          0.9,
-                          1
-                        ],
-                        colors: [
-                          Colors.lightGreen,
-                          Colors.lightGreen[400],
-                          Colors.lightGreen[200],
-                          Colors.lightGreen[300],
-                          Colors.lightGreen,
-                        ]),
-                    borderRadius: BorderRadius.circular(8.0)),
-                child: Column(
-                  children: <Widget>[
-                    Transform.translate(
-                      child: Container(
-                          padding: EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(180.0),
-                              border:
-                                  Border.all(color: Colors.red, width: 2.5)),
-                          child: Icon(
-                            Icons.warning,
-                            size: 60,
-                            color: Colors.blue,
-                          )),
-                      offset: Offset(15, -40),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Há mais mensagens predefinidas para serem lidas abaixo.',
-                        textAlign: TextAlign.left,
-                        style: GoogleFonts.robotoMono(
-                            fontSize: 23.0,
-                            letterSpacing: 2.0,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 25.0,
-                    ),
-                  ],
-                ),
-              ));
+            if (formulario.isNotEmpty) {
+              if (serialData
+                  .where((element) => element.contains('MFRMCF'))
+                  .isNotEmpty) {
+                String titulo = serialData
+                    .where((element) => element.contains('MFRMCI'))
+                    .toList()[0]
+                    .split(',')[1];
+                int indice = int.tryParse(ultimaRequisicao.split(',')[1]);
+                Modular.to.pushNamed('/formMsgFormatada', arguments: {
+                  'titulo': titulo,
+                  'formFields': formulario,
+                  'writeCharac': writeCharac,
+                  'indiceMensagem': indice
+                });
+              }
             }
           }
-          scroll.jumpTo(scroll.position.maxScrollExtent + 1500);
           break;
         default:
-          widgets.clear();
           break;
       }
     }
@@ -633,17 +504,57 @@ abstract class _BluetoothControllerBase with Store {
   @action
   void changeSegmentedOption(int option) {
     widgets.clear();
+    serialData.clear();
     switch (option) {
       case 0:
         if (writeCharac != null) {
           writeCharac.write(utf8.encode("MFRMINIT"));
-          print('OPAAA');
-          updateWidgets();
         }
         break;
       default:
-        widgets.clear();
         break;
+    }
+  }
+
+  void showDialog() {
+    if (serialData.last.contains("MFRMINIT,")) {
+      int indice = int.tryParse(ultimaRequisicao.split(',')[1]);
+      print("INDICE RECEBIDO = $indice");
+      Modular.to.showDialog(builder: (_) {
+        return CupertinoAlertDialog(
+          title: Text(
+            'Solicitação',
+            style: GoogleFonts.sourceCodePro(
+                wordSpacing: 1.5, fontWeight: FontWeight.w500, fontSize: 18.0),
+          ),
+          content: Text(
+            'Deseja montar o menu de mensagens disponíveis?',
+            style: GoogleFonts.sourceCodePro(
+                wordSpacing: 1.5, fontSize: 14.0, fontWeight: FontWeight.w300),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: () {
+                Modular.to.pop();
+              },
+              child: Text(
+                'CANCELAR',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+            FlatButton(
+              onPressed: () {
+                writeCharac.write(utf8.encode('MFRM,$indice'));
+                Modular.to.pop();
+              },
+              child: Text(
+                'OK',
+                style: TextStyle(color: Colors.blue),
+              ),
+            ),
+          ],
+        );
+      });
     }
   }
 }

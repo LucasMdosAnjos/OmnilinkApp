@@ -1,0 +1,5 @@
+lib/app/modules/bluetooth/formMsgFormatada/formMsgFormatada_module.dart
+lib/app/modules/bluetooth/formMsgFormatada/formMsgFormatada_page.dart
+test/app/modules/bluetooth/formMsgFormatada/formMsgFormatada_page_test.dart
+lib/app/modules/bluetooth/formMsgFormatada/formMsgFormatada_controller.dart
+test/app/modules/bluetooth/formMsgFormatada/formMsgFormatada_controller_test.dart
