@@ -15,8 +15,8 @@ class CardOptionWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Observer(builder: (_) {
         return Container(
-            width: 105,
-            height: 105,
+            width: 150,
+            height: 150,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25.0),
             ),
@@ -37,8 +37,8 @@ class CardOptionWidget extends StatelessWidget {
                           )
                         : Container(),
                     Container(
-                      width: 80.5,
-                      height: 80.5,
+                      width: 115,
+                      height: 115,
                       alignment: Alignment.center,
                       child: Image.asset(
                         controller.mapPictures[option],

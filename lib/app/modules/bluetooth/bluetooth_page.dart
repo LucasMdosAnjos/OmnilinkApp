@@ -114,6 +114,12 @@ class _BluetoothPageState
             },
             icon: Icon(Icons.settings),
           ),
+          actions: <Widget>[
+            ImageIcon(
+              AssetImage('assets/omnilink_logo.png'),
+              size: 110,
+            ),
+          ],
         ),
         body: Observer(builder: (_) {
           return Stack(
@@ -207,21 +213,6 @@ class _BluetoothPageState
                                                       ),
                                                     ],
                                                   ),
-                                                  Align(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          right: 15.0),
-                                                      width: 150.0,
-                                                      height: 50.0,
-                                                      child: Image.asset(
-                                                        'assets/omnilink.png',
-                                                        fit: BoxFit.contain,
-                                                        color: Colors.blue[900],
-                                                      ),
-                                                    ),
-                                                  )
                                                 ],
                                               ),
                                             ),
