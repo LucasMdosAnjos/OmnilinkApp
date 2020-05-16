@@ -135,8 +135,10 @@ class _BluetoothPageState
               (!controller.showLoading)
                   ? Column(
                       children: <Widget>[
-                        Column(
-                          children: controller.devices.map((f) => f).toList(),
+                        SingleChildScrollView(
+                          child: Column(
+                            children: controller.devices.map((f) => f).toList(),
+                          ),
                         ),
                         Observer(builder: (_) {
                           if (controller.connectedDevice != "") {
@@ -165,7 +167,7 @@ class _BluetoothPageState
                                               child: Column(
                                                 children: <Widget>[
                                                   SizedBox(
-                                                    height: 25.0,
+                                                    height: 12.5,
                                                   ),
                                                   Row(
                                                     mainAxisAlignment:
@@ -211,8 +213,8 @@ class _BluetoothPageState
                                                     child: Container(
                                                       margin: EdgeInsets.only(
                                                           right: 15.0),
-                                                      width: 180.0,
-                                                      height: 80.0,
+                                                      width: 150.0,
+                                                      height: 50.0,
                                                       child: Image.asset(
                                                         'assets/omnilink.png',
                                                         fit: BoxFit.contain,

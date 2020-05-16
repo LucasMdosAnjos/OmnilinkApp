@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert' show utf8;
+import 'package:toast/toast.dart';
 part 'bluetooth_controller.g.dart';
 
 class BluetoothController = _BluetoothControllerBase with _$BluetoothController;
@@ -92,13 +93,12 @@ abstract class _BluetoothControllerBase with Store {
         return -1;
       }
     });
-    ScanResult r = results[0];
-    results.forEach((f) => print(f.rssi));
-    print('${r.device.name} found! rssi: ${r.rssi}');
-    devices.add(Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(
+    results.forEach((element){
+      ScanResult r = element;
+      if(r.device.name.isNotEmpty){
+        if(connectedDevice.isEmpty){
+     devices.add(ListTile(
+      title:  Text(
           '${r.device.name}, RSSI: ${r.rssi}',
           style: GoogleFonts.robotoMono(
               fontSize: 17,
@@ -106,10 +106,7 @@ abstract class _BluetoothControllerBase with Store {
               color: Colors.lightGreen[700],
               fontWeight: FontWeight.w400),
         ),
-        SizedBox(
-          width: 20.0,
-        ),
-        RaisedButton(
+        trailing: RaisedButton(
           color: Colors.blueGrey,
           onPressed: () async {
             if (connectedDevice == "") {
@@ -160,8 +157,74 @@ abstract class _BluetoothControllerBase with Store {
           child: Text(
               connectedDevice == r.device.name ? "Desconectar" : "Conectar"),
         ),
-      ],
     ));
+    }else{
+      if(connectedDevice == r.device.name){
+    devices.add(ListTile(
+      title:  Text(
+          '${r.device.name}, RSSI: ${r.rssi}',
+          style: GoogleFonts.robotoMono(
+              fontSize: 17,
+              letterSpacing: 2.0,
+              color: Colors.lightGreen[700],
+              fontWeight: FontWeight.w400),
+        ),
+        trailing: RaisedButton(
+          color: Colors.blueGrey,
+          onPressed: () async {
+            if (connectedDevice == "") {
+              showLoading = true;
+              Future.delayed(Duration(seconds: 3)).then((_) {
+                showLoading = false;
+              });
+              resultDevice = r;
+              await r.device.connect();
+              connectedDevice = r.device.name;
+              List<BluetoothService> services =
+                  await r.device.discoverServices();
+              services.forEach((service) async {
+                if (service.uuid.toString().toUpperCase() ==
+                    "2456E1B9-26E2-8F83-E744-F34F01E9D701") {
+                  print("Serviço: " + service.uuid.toString());
+                  var characteristics = service.characteristics;
+                  for (BluetoothCharacteristic c in characteristics) {
+                    print(c.uuid);
+                    if (c.uuid.toString().toUpperCase() ==
+                        '2456E1B9-26E2-8F83-E744-F34F01E9D704') {
+                      writeCharac = c;
+                    }
+                    if (c.uuid.toString().toUpperCase() ==
+                        '2456E1B9-26E2-8F83-E744-F34F01E9D703') {
+                      await c.setNotifyValue(true);
+                      c.value.listen((value) async {
+                        serialData.add(utf8.decode(value));
+                        await updateWidgets();
+                        print(value);
+                        print(utf8.decode(value));
+                        print("--------------/------------");
+                      });
+                    }
+                  }
+                }
+              });
+              addWidgetsDevices(results);
+            } else {
+              await r.device.disconnect();
+              connectedDevice = "";
+              selectedOption = 15;
+              widgets.clear();
+              serialData.clear();
+              addWidgetsDevices(results);
+            }
+          },
+          child: Text(
+              connectedDevice == r.device.name ? "Desconectar" : "Conectar"),
+        ),
+    ));
+      }
+    }
+    }
+     });
   }
 
   @action
@@ -510,7 +573,9 @@ abstract class _BluetoothControllerBase with Store {
     switch (option) {
       case 0:
         if (writeCharac != null) {
-          writeCharac.write(utf8.encode("MFRMINIT"));
+          writeCharac.write(utf8.encode("MFRMINIT")).then((value){
+            Toast.show("Esperando resposta do rastreador", context, duration: 3,gravity:  Toast.BOTTOM);
+          });
         }
         break;
       default:

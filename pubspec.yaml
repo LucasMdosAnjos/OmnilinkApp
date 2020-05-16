@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
+  toast: ^0.1.5
   cpf_cnpj_validator: ^1.0.5
   flutter_masked_text: ^0.8.0
   system_setting: ^0.1.3
