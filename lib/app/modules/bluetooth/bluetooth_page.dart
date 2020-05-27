@@ -130,6 +130,7 @@ class _BluetoothPageState
                             FlatButton(
                               onPressed: () {
                                 Modular.to.pop();
+                                Modular.to.pop();
                               },
                               child: Text(
                                 'OK',
