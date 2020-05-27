@@ -67,6 +67,102 @@ class _BluetoothPageState
         }
       },
       child: Scaffold(
+        drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              DrawerHeader(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text(
+                      'Menu de opções',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.robotoMono(
+                          fontSize: 19.5,
+                          letterSpacing: 1.5,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Container(
+                      width: 150,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/omnilink_logo.png'),
+                          fit: BoxFit.contain
+                        )
+                      ),
+                    ),
+                  ],
+                ),
+                decoration: BoxDecoration(color: Colors.blueGrey.withOpacity(0.6)),
+              ),
+              Card(
+                elevation: 5.0,
+                              child: ListTile(
+                  leading: Icon(Icons.settings,color: Colors.blue[800],),
+                  title: Text('Configurar',style: GoogleFonts.robotoMono(
+                            fontSize: 14.0,
+                            letterSpacing: 1.5,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500)),
+                  onTap: () {
+                if (controller.connectedDevice != "") {
+                  showCupertinoDialog(
+                      context: context,
+                      builder: (_) {
+                        return CupertinoAlertDialog(
+                          title: Text(
+                            'Aviso',
+                            style: GoogleFonts.sourceCodePro(
+                                wordSpacing: 1.5,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18.0),
+                          ),
+                          content: Text(
+                            'Clique em desconectar antes de sair desta tela.',
+                            style: GoogleFonts.sourceCodePro(
+                                wordSpacing: 1.5,
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w300),
+                          ),
+                          actions: <Widget>[
+                            FlatButton(
+                              onPressed: () {
+                                Modular.to.pop();
+                              },
+                              child: Text(
+                                'OK',
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ),
+                          ],
+                        );
+                      });
+                } else {
+                  Modular.to.pop();
+                  Modular.to.pop();
+                }
+                  },
+                ),
+              ),
+              Card(
+                elevation: 5.0,
+                              child: ListTile(
+                  leading: Icon(Icons.dashboard,color: Colors.blue[800],),
+                  title: Text('Dashboard',style: GoogleFonts.robotoMono(
+                            fontSize: 14.0,
+                            letterSpacing: 1.5,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500)),
+                  onTap: () {
+
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
         appBar: AppBar(
           backgroundColor: Colors.blue[800],
           title: Text(
@@ -74,46 +170,6 @@ class _BluetoothPageState
             style: TextStyle(fontSize: 25.0),
           ),
           centerTitle: true,
-          leading: IconButton(
-            onPressed: () {
-              if (controller.connectedDevice != "") {
-                showCupertinoDialog(
-                    context: context,
-                    builder: (_) {
-                      return CupertinoAlertDialog(
-                        title: Text(
-                          'Aviso',
-                          style: GoogleFonts.sourceCodePro(
-                              wordSpacing: 1.5,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18.0),
-                        ),
-                        content: Text(
-                          'Clique em desconectar antes de sair desta tela.',
-                          style: GoogleFonts.sourceCodePro(
-                              wordSpacing: 1.5,
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w300),
-                        ),
-                        actions: <Widget>[
-                          FlatButton(
-                            onPressed: () {
-                              Modular.to.pop();
-                            },
-                            child: Text(
-                              'OK',
-                              style: TextStyle(color: Colors.blue),
-                            ),
-                          ),
-                        ],
-                      );
-                    });
-              } else {
-                Modular.to.pop();
-              }
-            },
-            icon: Icon(Icons.settings),
-          ),
           actions: <Widget>[
             ImageIcon(
               AssetImage('assets/omnilink_logo.png'),

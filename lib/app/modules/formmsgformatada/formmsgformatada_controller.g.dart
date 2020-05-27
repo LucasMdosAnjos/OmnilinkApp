@@ -13,34 +13,30 @@ mixin _$FormmsgformatadaController on _FormmsgformatadaControllerBase, Store {
 
   @override
   int get value {
-    _$valueAtom.context.enforceReadPolicy(_$valueAtom);
-    _$valueAtom.reportObserved();
+    _$valueAtom.reportRead();
     return super.value;
   }
 
   @override
   set value(int value) {
-    _$valueAtom.context.conditionallyRunInAction(() {
+    _$valueAtom.reportWrite(value, super.value, () {
       super.value = value;
-      _$valueAtom.reportChanged();
-    }, _$valueAtom, name: '${_$valueAtom.name}_set');
+    });
   }
 
   final _$widgetsAtom = Atom(name: '_FormmsgformatadaControllerBase.widgets');
 
   @override
   ObservableList<Widget> get widgets {
-    _$widgetsAtom.context.enforceReadPolicy(_$widgetsAtom);
-    _$widgetsAtom.reportObserved();
+    _$widgetsAtom.reportRead();
     return super.widgets;
   }
 
   @override
   set widgets(ObservableList<Widget> value) {
-    _$widgetsAtom.context.conditionallyRunInAction(() {
+    _$widgetsAtom.reportWrite(value, super.widgets, () {
       super.widgets = value;
-      _$widgetsAtom.reportChanged();
-    }, _$widgetsAtom, name: '${_$widgetsAtom.name}_set');
+    });
   }
 
   final _$bufferFormAtom =
@@ -48,17 +44,15 @@ mixin _$FormmsgformatadaController on _FormmsgformatadaControllerBase, Store {
 
   @override
   Map<String, String> get bufferForm {
-    _$bufferFormAtom.context.enforceReadPolicy(_$bufferFormAtom);
-    _$bufferFormAtom.reportObserved();
+    _$bufferFormAtom.reportRead();
     return super.bufferForm;
   }
 
   @override
   set bufferForm(Map<String, String> value) {
-    _$bufferFormAtom.context.conditionallyRunInAction(() {
+    _$bufferFormAtom.reportWrite(value, super.bufferForm, () {
       super.bufferForm = value;
-      _$bufferFormAtom.reportChanged();
-    }, _$bufferFormAtom, name: '${_$bufferFormAtom.name}_set');
+    });
   }
 
   final _$enviandoFormAtom =
@@ -66,17 +60,15 @@ mixin _$FormmsgformatadaController on _FormmsgformatadaControllerBase, Store {
 
   @override
   bool get enviandoForm {
-    _$enviandoFormAtom.context.enforceReadPolicy(_$enviandoFormAtom);
-    _$enviandoFormAtom.reportObserved();
+    _$enviandoFormAtom.reportRead();
     return super.enviandoForm;
   }
 
   @override
   set enviandoForm(bool value) {
-    _$enviandoFormAtom.context.conditionallyRunInAction(() {
+    _$enviandoFormAtom.reportWrite(value, super.enviandoForm, () {
       super.enviandoForm = value;
-      _$enviandoFormAtom.reportChanged();
-    }, _$enviandoFormAtom, name: '${_$enviandoFormAtom.name}_set');
+    });
   }
 
   final _$_FormmsgformatadaControllerBaseActionController =
@@ -84,8 +76,8 @@ mixin _$FormmsgformatadaController on _FormmsgformatadaControllerBase, Store {
 
   @override
   void buildForm() {
-    final _$actionInfo =
-        _$_FormmsgformatadaControllerBaseActionController.startAction();
+    final _$actionInfo = _$_FormmsgformatadaControllerBaseActionController
+        .startAction(name: '_FormmsgformatadaControllerBase.buildForm');
     try {
       return super.buildForm();
     } finally {
@@ -95,8 +87,8 @@ mixin _$FormmsgformatadaController on _FormmsgformatadaControllerBase, Store {
 
   @override
   void increment() {
-    final _$actionInfo =
-        _$_FormmsgformatadaControllerBaseActionController.startAction();
+    final _$actionInfo = _$_FormmsgformatadaControllerBaseActionController
+        .startAction(name: '_FormmsgformatadaControllerBase.increment');
     try {
       return super.increment();
     } finally {
@@ -106,8 +98,11 @@ mixin _$FormmsgformatadaController on _FormmsgformatadaControllerBase, Store {
 
   @override
   String toString() {
-    final string =
-        'value: ${value.toString()},widgets: ${widgets.toString()},bufferForm: ${bufferForm.toString()},enviandoForm: ${enviandoForm.toString()}';
-    return '{$string}';
+    return '''
+value: ${value},
+widgets: ${widgets},
+bufferForm: ${bufferForm},
+enviandoForm: ${enviandoForm}
+    ''';
   }
 }

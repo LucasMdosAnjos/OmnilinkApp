@@ -13,34 +13,30 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
 
   @override
   BuildContext get context {
-    _$contextAtom.context.enforceReadPolicy(_$contextAtom);
-    _$contextAtom.reportObserved();
+    _$contextAtom.reportRead();
     return super.context;
   }
 
   @override
   set context(BuildContext value) {
-    _$contextAtom.context.conditionallyRunInAction(() {
+    _$contextAtom.reportWrite(value, super.context, () {
       super.context = value;
-      _$contextAtom.reportChanged();
-    }, _$contextAtom, name: '${_$contextAtom.name}_set');
+    });
   }
 
   final _$writeCharacAtom = Atom(name: '_BluetoothControllerBase.writeCharac');
 
   @override
   BluetoothCharacteristic get writeCharac {
-    _$writeCharacAtom.context.enforceReadPolicy(_$writeCharacAtom);
-    _$writeCharacAtom.reportObserved();
+    _$writeCharacAtom.reportRead();
     return super.writeCharac;
   }
 
   @override
   set writeCharac(BluetoothCharacteristic value) {
-    _$writeCharacAtom.context.conditionallyRunInAction(() {
+    _$writeCharacAtom.reportWrite(value, super.writeCharac, () {
       super.writeCharac = value;
-      _$writeCharacAtom.reportChanged();
-    }, _$writeCharacAtom, name: '${_$writeCharacAtom.name}_set');
+    });
   }
 
   final _$ultimaRequisicaoAtom =
@@ -48,51 +44,45 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
 
   @override
   String get ultimaRequisicao {
-    _$ultimaRequisicaoAtom.context.enforceReadPolicy(_$ultimaRequisicaoAtom);
-    _$ultimaRequisicaoAtom.reportObserved();
+    _$ultimaRequisicaoAtom.reportRead();
     return super.ultimaRequisicao;
   }
 
   @override
   set ultimaRequisicao(String value) {
-    _$ultimaRequisicaoAtom.context.conditionallyRunInAction(() {
+    _$ultimaRequisicaoAtom.reportWrite(value, super.ultimaRequisicao, () {
       super.ultimaRequisicao = value;
-      _$ultimaRequisicaoAtom.reportChanged();
-    }, _$ultimaRequisicaoAtom, name: '${_$ultimaRequisicaoAtom.name}_set');
+    });
   }
 
   final _$valueAtom = Atom(name: '_BluetoothControllerBase.value');
 
   @override
   int get value {
-    _$valueAtom.context.enforceReadPolicy(_$valueAtom);
-    _$valueAtom.reportObserved();
+    _$valueAtom.reportRead();
     return super.value;
   }
 
   @override
   set value(int value) {
-    _$valueAtom.context.conditionallyRunInAction(() {
+    _$valueAtom.reportWrite(value, super.value, () {
       super.value = value;
-      _$valueAtom.reportChanged();
-    }, _$valueAtom, name: '${_$valueAtom.name}_set');
+    });
   }
 
   final _$devicesAtom = Atom(name: '_BluetoothControllerBase.devices');
 
   @override
   ObservableList<Widget> get devices {
-    _$devicesAtom.context.enforceReadPolicy(_$devicesAtom);
-    _$devicesAtom.reportObserved();
+    _$devicesAtom.reportRead();
     return super.devices;
   }
 
   @override
   set devices(ObservableList<Widget> value) {
-    _$devicesAtom.context.conditionallyRunInAction(() {
+    _$devicesAtom.reportWrite(value, super.devices, () {
       super.devices = value;
-      _$devicesAtom.reportChanged();
-    }, _$devicesAtom, name: '${_$devicesAtom.name}_set');
+    });
   }
 
   final _$connectedDeviceAtom =
@@ -100,17 +90,15 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
 
   @override
   String get connectedDevice {
-    _$connectedDeviceAtom.context.enforceReadPolicy(_$connectedDeviceAtom);
-    _$connectedDeviceAtom.reportObserved();
+    _$connectedDeviceAtom.reportRead();
     return super.connectedDevice;
   }
 
   @override
   set connectedDevice(String value) {
-    _$connectedDeviceAtom.context.conditionallyRunInAction(() {
+    _$connectedDeviceAtom.reportWrite(value, super.connectedDevice, () {
       super.connectedDevice = value;
-      _$connectedDeviceAtom.reportChanged();
-    }, _$connectedDeviceAtom, name: '${_$connectedDeviceAtom.name}_set');
+    });
   }
 
   final _$resultDeviceAtom =
@@ -118,34 +106,30 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
 
   @override
   ScanResult get resultDevice {
-    _$resultDeviceAtom.context.enforceReadPolicy(_$resultDeviceAtom);
-    _$resultDeviceAtom.reportObserved();
+    _$resultDeviceAtom.reportRead();
     return super.resultDevice;
   }
 
   @override
   set resultDevice(ScanResult value) {
-    _$resultDeviceAtom.context.conditionallyRunInAction(() {
+    _$resultDeviceAtom.reportWrite(value, super.resultDevice, () {
       super.resultDevice = value;
-      _$resultDeviceAtom.reportChanged();
-    }, _$resultDeviceAtom, name: '${_$resultDeviceAtom.name}_set');
+    });
   }
 
   final _$showLoadingAtom = Atom(name: '_BluetoothControllerBase.showLoading');
 
   @override
   bool get showLoading {
-    _$showLoadingAtom.context.enforceReadPolicy(_$showLoadingAtom);
-    _$showLoadingAtom.reportObserved();
+    _$showLoadingAtom.reportRead();
     return super.showLoading;
   }
 
   @override
   set showLoading(bool value) {
-    _$showLoadingAtom.context.conditionallyRunInAction(() {
+    _$showLoadingAtom.reportWrite(value, super.showLoading, () {
       super.showLoading = value;
-      _$showLoadingAtom.reportChanged();
-    }, _$showLoadingAtom, name: '${_$showLoadingAtom.name}_set');
+    });
   }
 
   final _$selectedOptionAtom =
@@ -153,51 +137,45 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
 
   @override
   int get selectedOption {
-    _$selectedOptionAtom.context.enforceReadPolicy(_$selectedOptionAtom);
-    _$selectedOptionAtom.reportObserved();
+    _$selectedOptionAtom.reportRead();
     return super.selectedOption;
   }
 
   @override
   set selectedOption(int value) {
-    _$selectedOptionAtom.context.conditionallyRunInAction(() {
+    _$selectedOptionAtom.reportWrite(value, super.selectedOption, () {
       super.selectedOption = value;
-      _$selectedOptionAtom.reportChanged();
-    }, _$selectedOptionAtom, name: '${_$selectedOptionAtom.name}_set');
+    });
   }
 
   final _$widgetsAtom = Atom(name: '_BluetoothControllerBase.widgets');
 
   @override
   ObservableList<Widget> get widgets {
-    _$widgetsAtom.context.enforceReadPolicy(_$widgetsAtom);
-    _$widgetsAtom.reportObserved();
+    _$widgetsAtom.reportRead();
     return super.widgets;
   }
 
   @override
   set widgets(ObservableList<Widget> value) {
-    _$widgetsAtom.context.conditionallyRunInAction(() {
+    _$widgetsAtom.reportWrite(value, super.widgets, () {
       super.widgets = value;
-      _$widgetsAtom.reportChanged();
-    }, _$widgetsAtom, name: '${_$widgetsAtom.name}_set');
+    });
   }
 
   final _$serialDataAtom = Atom(name: '_BluetoothControllerBase.serialData');
 
   @override
   ObservableList<String> get serialData {
-    _$serialDataAtom.context.enforceReadPolicy(_$serialDataAtom);
-    _$serialDataAtom.reportObserved();
+    _$serialDataAtom.reportRead();
     return super.serialData;
   }
 
   @override
   set serialData(ObservableList<String> value) {
-    _$serialDataAtom.context.conditionallyRunInAction(() {
+    _$serialDataAtom.reportWrite(value, super.serialData, () {
       super.serialData = value;
-      _$serialDataAtom.reportChanged();
-    }, _$serialDataAtom, name: '${_$serialDataAtom.name}_set');
+    });
   }
 
   final _$expandPanelOptionsAtom =
@@ -205,21 +183,19 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
 
   @override
   bool get expandPanelOptions {
-    _$expandPanelOptionsAtom.context
-        .enforceReadPolicy(_$expandPanelOptionsAtom);
-    _$expandPanelOptionsAtom.reportObserved();
+    _$expandPanelOptionsAtom.reportRead();
     return super.expandPanelOptions;
   }
 
   @override
   set expandPanelOptions(bool value) {
-    _$expandPanelOptionsAtom.context.conditionallyRunInAction(() {
+    _$expandPanelOptionsAtom.reportWrite(value, super.expandPanelOptions, () {
       super.expandPanelOptions = value;
-      _$expandPanelOptionsAtom.reportChanged();
-    }, _$expandPanelOptionsAtom, name: '${_$expandPanelOptionsAtom.name}_set');
+    });
   }
 
-  final _$updateWidgetsAsyncAction = AsyncAction('updateWidgets');
+  final _$updateWidgetsAsyncAction =
+      AsyncAction('_BluetoothControllerBase.updateWidgets');
 
   @override
   Future<void> updateWidgets() {
@@ -231,8 +207,8 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
 
   @override
   void setContext(BuildContext ctx) {
-    final _$actionInfo =
-        _$_BluetoothControllerBaseActionController.startAction();
+    final _$actionInfo = _$_BluetoothControllerBaseActionController.startAction(
+        name: '_BluetoothControllerBase.setContext');
     try {
       return super.setContext(ctx);
     } finally {
@@ -242,8 +218,8 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
 
   @override
   void addWidgetsDevices(List<ScanResult> results) {
-    final _$actionInfo =
-        _$_BluetoothControllerBaseActionController.startAction();
+    final _$actionInfo = _$_BluetoothControllerBaseActionController.startAction(
+        name: '_BluetoothControllerBase.addWidgetsDevices');
     try {
       return super.addWidgetsDevices(results);
     } finally {
@@ -253,8 +229,8 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
 
   @override
   void increment() {
-    final _$actionInfo =
-        _$_BluetoothControllerBaseActionController.startAction();
+    final _$actionInfo = _$_BluetoothControllerBaseActionController.startAction(
+        name: '_BluetoothControllerBase.increment');
     try {
       return super.increment();
     } finally {
@@ -264,8 +240,8 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
 
   @override
   void setPanelExpand() {
-    final _$actionInfo =
-        _$_BluetoothControllerBaseActionController.startAction();
+    final _$actionInfo = _$_BluetoothControllerBaseActionController.startAction(
+        name: '_BluetoothControllerBase.setPanelExpand');
     try {
       return super.setPanelExpand();
     } finally {
@@ -275,8 +251,8 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
 
   @override
   void setOption(int option) {
-    final _$actionInfo =
-        _$_BluetoothControllerBaseActionController.startAction();
+    final _$actionInfo = _$_BluetoothControllerBaseActionController.startAction(
+        name: '_BluetoothControllerBase.setOption');
     try {
       return super.setOption(option);
     } finally {
@@ -286,8 +262,8 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
 
   @override
   void changeSegmentedOption(int option) {
-    final _$actionInfo =
-        _$_BluetoothControllerBaseActionController.startAction();
+    final _$actionInfo = _$_BluetoothControllerBaseActionController.startAction(
+        name: '_BluetoothControllerBase.changeSegmentedOption');
     try {
       return super.changeSegmentedOption(option);
     } finally {
@@ -297,8 +273,19 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
 
   @override
   String toString() {
-    final string =
-        'context: ${context.toString()},writeCharac: ${writeCharac.toString()},ultimaRequisicao: ${ultimaRequisicao.toString()},value: ${value.toString()},devices: ${devices.toString()},connectedDevice: ${connectedDevice.toString()},resultDevice: ${resultDevice.toString()},showLoading: ${showLoading.toString()},selectedOption: ${selectedOption.toString()},widgets: ${widgets.toString()},serialData: ${serialData.toString()},expandPanelOptions: ${expandPanelOptions.toString()}';
-    return '{$string}';
+    return '''
+context: ${context},
+writeCharac: ${writeCharac},
+ultimaRequisicao: ${ultimaRequisicao},
+value: ${value},
+devices: ${devices},
+connectedDevice: ${connectedDevice},
+resultDevice: ${resultDevice},
+showLoading: ${showLoading},
+selectedOption: ${selectedOption},
+widgets: ${widgets},
+serialData: ${serialData},
+expandPanelOptions: ${expandPanelOptions}
+    ''';
   }
 }

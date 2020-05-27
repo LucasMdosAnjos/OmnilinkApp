@@ -13,119 +13,105 @@ mixin _$UsbController on _UsbControllerBase, Store {
 
   @override
   String get status {
-    _$statusAtom.context.enforceReadPolicy(_$statusAtom);
-    _$statusAtom.reportObserved();
+    _$statusAtom.reportRead();
     return super.status;
   }
 
   @override
   set status(String value) {
-    _$statusAtom.context.conditionallyRunInAction(() {
+    _$statusAtom.reportWrite(value, super.status, () {
       super.status = value;
-      _$statusAtom.reportChanged();
-    }, _$statusAtom, name: '${_$statusAtom.name}_set');
+    });
   }
 
   final _$portsAtom = Atom(name: '_UsbControllerBase.ports');
 
   @override
   ObservableList<Widget> get ports {
-    _$portsAtom.context.enforceReadPolicy(_$portsAtom);
-    _$portsAtom.reportObserved();
+    _$portsAtom.reportRead();
     return super.ports;
   }
 
   @override
   set ports(ObservableList<Widget> value) {
-    _$portsAtom.context.conditionallyRunInAction(() {
+    _$portsAtom.reportWrite(value, super.ports, () {
       super.ports = value;
-      _$portsAtom.reportChanged();
-    }, _$portsAtom, name: '${_$portsAtom.name}_set');
+    });
   }
 
   final _$serialDataAtom = Atom(name: '_UsbControllerBase.serialData');
 
   @override
   ObservableList<String> get serialData {
-    _$serialDataAtom.context.enforceReadPolicy(_$serialDataAtom);
-    _$serialDataAtom.reportObserved();
+    _$serialDataAtom.reportRead();
     return super.serialData;
   }
 
   @override
   set serialData(ObservableList<String> value) {
-    _$serialDataAtom.context.conditionallyRunInAction(() {
+    _$serialDataAtom.reportWrite(value, super.serialData, () {
       super.serialData = value;
-      _$serialDataAtom.reportChanged();
-    }, _$serialDataAtom, name: '${_$serialDataAtom.name}_set');
+    });
   }
 
   final _$deviceIdAtom = Atom(name: '_UsbControllerBase.deviceId');
 
   @override
   int get deviceId {
-    _$deviceIdAtom.context.enforceReadPolicy(_$deviceIdAtom);
-    _$deviceIdAtom.reportObserved();
+    _$deviceIdAtom.reportRead();
     return super.deviceId;
   }
 
   @override
   set deviceId(int value) {
-    _$deviceIdAtom.context.conditionallyRunInAction(() {
+    _$deviceIdAtom.reportWrite(value, super.deviceId, () {
       super.deviceId = value;
-      _$deviceIdAtom.reportChanged();
-    }, _$deviceIdAtom, name: '${_$deviceIdAtom.name}_set');
+    });
   }
 
   final _$widgetsAtom = Atom(name: '_UsbControllerBase.widgets');
 
   @override
   ObservableList<Widget> get widgets {
-    _$widgetsAtom.context.enforceReadPolicy(_$widgetsAtom);
-    _$widgetsAtom.reportObserved();
+    _$widgetsAtom.reportRead();
     return super.widgets;
   }
 
   @override
   set widgets(ObservableList<Widget> value) {
-    _$widgetsAtom.context.conditionallyRunInAction(() {
+    _$widgetsAtom.reportWrite(value, super.widgets, () {
       super.widgets = value;
-      _$widgetsAtom.reportChanged();
-    }, _$widgetsAtom, name: '${_$widgetsAtom.name}_set');
+    });
   }
 
   final _$showClockAtom = Atom(name: '_UsbControllerBase.showClock');
 
   @override
   bool get showClock {
-    _$showClockAtom.context.enforceReadPolicy(_$showClockAtom);
-    _$showClockAtom.reportObserved();
+    _$showClockAtom.reportRead();
     return super.showClock;
   }
 
   @override
   set showClock(bool value) {
-    _$showClockAtom.context.conditionallyRunInAction(() {
+    _$showClockAtom.reportWrite(value, super.showClock, () {
       super.showClock = value;
-      _$showClockAtom.reportChanged();
-    }, _$showClockAtom, name: '${_$showClockAtom.name}_set');
+    });
   }
 
   final _$selectedOptionAtom = Atom(name: '_UsbControllerBase.selectedOption');
 
   @override
   int get selectedOption {
-    _$selectedOptionAtom.context.enforceReadPolicy(_$selectedOptionAtom);
-    _$selectedOptionAtom.reportObserved();
+    _$selectedOptionAtom.reportRead();
     return super.selectedOption;
   }
 
   @override
   set selectedOption(int value) {
-    _$selectedOptionAtom.context.conditionallyRunInAction(() {
+    _$selectedOptionAtom.reportWrite(value, super.selectedOption, () {
       super.selectedOption = value;
-      _$selectedOptionAtom.reportChanged();
-    }, _$selectedOptionAtom, name: '${_$selectedOptionAtom.name}_set');
+    });
   }
 
   final _$expandPanelOptionsAtom =
@@ -133,21 +119,19 @@ mixin _$UsbController on _UsbControllerBase, Store {
 
   @override
   bool get expandPanelOptions {
-    _$expandPanelOptionsAtom.context
-        .enforceReadPolicy(_$expandPanelOptionsAtom);
-    _$expandPanelOptionsAtom.reportObserved();
+    _$expandPanelOptionsAtom.reportRead();
     return super.expandPanelOptions;
   }
 
   @override
   set expandPanelOptions(bool value) {
-    _$expandPanelOptionsAtom.context.conditionallyRunInAction(() {
+    _$expandPanelOptionsAtom.reportWrite(value, super.expandPanelOptions, () {
       super.expandPanelOptions = value;
-      _$expandPanelOptionsAtom.reportChanged();
-    }, _$expandPanelOptionsAtom, name: '${_$expandPanelOptionsAtom.name}_set');
+    });
   }
 
-  final _$setPortConfigsAsyncAction = AsyncAction('setPortConfigs');
+  final _$setPortConfigsAsyncAction =
+      AsyncAction('_UsbControllerBase.setPortConfigs');
 
   @override
   Future<dynamic> setPortConfigs() {
@@ -159,7 +143,8 @@ mixin _$UsbController on _UsbControllerBase, Store {
 
   @override
   void setClock(bool value) {
-    final _$actionInfo = _$_UsbControllerBaseActionController.startAction();
+    final _$actionInfo = _$_UsbControllerBaseActionController.startAction(
+        name: '_UsbControllerBase.setClock');
     try {
       return super.setClock(value);
     } finally {
@@ -169,7 +154,8 @@ mixin _$UsbController on _UsbControllerBase, Store {
 
   @override
   void setPanelExpand() {
-    final _$actionInfo = _$_UsbControllerBaseActionController.startAction();
+    final _$actionInfo = _$_UsbControllerBaseActionController.startAction(
+        name: '_UsbControllerBase.setPanelExpand');
     try {
       return super.setPanelExpand();
     } finally {
@@ -179,7 +165,8 @@ mixin _$UsbController on _UsbControllerBase, Store {
 
   @override
   void setOption(int option) {
-    final _$actionInfo = _$_UsbControllerBaseActionController.startAction();
+    final _$actionInfo = _$_UsbControllerBaseActionController.startAction(
+        name: '_UsbControllerBase.setOption');
     try {
       return super.setOption(option);
     } finally {
@@ -189,7 +176,8 @@ mixin _$UsbController on _UsbControllerBase, Store {
 
   @override
   void changeSegmentedOption(int option) {
-    final _$actionInfo = _$_UsbControllerBaseActionController.startAction();
+    final _$actionInfo = _$_UsbControllerBaseActionController.startAction(
+        name: '_UsbControllerBase.changeSegmentedOption');
     try {
       return super.changeSegmentedOption(option);
     } finally {
@@ -199,7 +187,8 @@ mixin _$UsbController on _UsbControllerBase, Store {
 
   @override
   void addSerial(String text) {
-    final _$actionInfo = _$_UsbControllerBaseActionController.startAction();
+    final _$actionInfo = _$_UsbControllerBaseActionController.startAction(
+        name: '_UsbControllerBase.addSerial');
     try {
       return super.addSerial(text);
     } finally {
@@ -209,7 +198,8 @@ mixin _$UsbController on _UsbControllerBase, Store {
 
   @override
   void clearSerialData() {
-    final _$actionInfo = _$_UsbControllerBaseActionController.startAction();
+    final _$actionInfo = _$_UsbControllerBaseActionController.startAction(
+        name: '_UsbControllerBase.clearSerialData');
     try {
       return super.clearSerialData();
     } finally {
@@ -219,7 +209,8 @@ mixin _$UsbController on _UsbControllerBase, Store {
 
   @override
   void nullDeviceId() {
-    final _$actionInfo = _$_UsbControllerBaseActionController.startAction();
+    final _$actionInfo = _$_UsbControllerBaseActionController.startAction(
+        name: '_UsbControllerBase.nullDeviceId');
     try {
       return super.nullDeviceId();
     } finally {
@@ -229,7 +220,8 @@ mixin _$UsbController on _UsbControllerBase, Store {
 
   @override
   void changeStatus(String msg) {
-    final _$actionInfo = _$_UsbControllerBaseActionController.startAction();
+    final _$actionInfo = _$_UsbControllerBaseActionController.startAction(
+        name: '_UsbControllerBase.changeStatus');
     try {
       return super.changeStatus(msg);
     } finally {
@@ -239,7 +231,8 @@ mixin _$UsbController on _UsbControllerBase, Store {
 
   @override
   void setDeviceId(dynamic device) {
-    final _$actionInfo = _$_UsbControllerBaseActionController.startAction();
+    final _$actionInfo = _$_UsbControllerBaseActionController.startAction(
+        name: '_UsbControllerBase.setDeviceId');
     try {
       return super.setDeviceId(device);
     } finally {
@@ -249,7 +242,8 @@ mixin _$UsbController on _UsbControllerBase, Store {
 
   @override
   void listenSerial() {
-    final _$actionInfo = _$_UsbControllerBaseActionController.startAction();
+    final _$actionInfo = _$_UsbControllerBaseActionController.startAction(
+        name: '_UsbControllerBase.listenSerial');
     try {
       return super.listenSerial();
     } finally {
@@ -259,7 +253,8 @@ mixin _$UsbController on _UsbControllerBase, Store {
 
   @override
   void addPort() {
-    final _$actionInfo = _$_UsbControllerBaseActionController.startAction();
+    final _$actionInfo = _$_UsbControllerBaseActionController.startAction(
+        name: '_UsbControllerBase.addPort');
     try {
       return super.addPort();
     } finally {
@@ -269,7 +264,8 @@ mixin _$UsbController on _UsbControllerBase, Store {
 
   @override
   void buildWidgetPorts(List<UsbDevice> devices) {
-    final _$actionInfo = _$_UsbControllerBaseActionController.startAction();
+    final _$actionInfo = _$_UsbControllerBaseActionController.startAction(
+        name: '_UsbControllerBase.buildWidgetPorts');
     try {
       return super.buildWidgetPorts(devices);
     } finally {
@@ -279,8 +275,15 @@ mixin _$UsbController on _UsbControllerBase, Store {
 
   @override
   String toString() {
-    final string =
-        'status: ${status.toString()},ports: ${ports.toString()},serialData: ${serialData.toString()},deviceId: ${deviceId.toString()},widgets: ${widgets.toString()},showClock: ${showClock.toString()},selectedOption: ${selectedOption.toString()},expandPanelOptions: ${expandPanelOptions.toString()}';
-    return '{$string}';
+    return '''
+status: ${status},
+ports: ${ports},
+serialData: ${serialData},
+deviceId: ${deviceId},
+widgets: ${widgets},
+showClock: ${showClock},
+selectedOption: ${selectedOption},
+expandPanelOptions: ${expandPanelOptions}
+    ''';
   }
 }
