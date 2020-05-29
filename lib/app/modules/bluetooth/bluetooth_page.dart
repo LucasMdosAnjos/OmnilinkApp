@@ -1,9 +1,7 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:serial_terminal/app/modules/bluetooth/components/cardOption/cardOption_widget.dart';
 import 'bluetooth_controller.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -30,38 +28,8 @@ class _BluetoothPageState
     return WillPopScope(
       onWillPop: () async {
         if (controller.connectedDevice != "") {
-          showCupertinoDialog(
-              context: context,
-              builder: (_) {
-                return CupertinoAlertDialog(
-                  title: Text(
-                    'Aviso',
-                    style: GoogleFonts.sourceCodePro(
-                        wordSpacing: 1.5,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 18.0),
-                  ),
-                  content: Text(
-                    'Clique em desconectar antes de sair desta tela.',
-                    style: GoogleFonts.sourceCodePro(
-                        wordSpacing: 1.5,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w300),
-                  ),
-                  actions: <Widget>[
-                    FlatButton(
-                      onPressed: () {
-                        Modular.to.pop();
-                      },
-                      child: Text(
-                        'OK',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                    ),
-                  ],
-                );
-              });
-          return false;
+          await controller.disconnectDevice();
+          return true;
         } else {
           return true;
         }
@@ -87,30 +55,59 @@ class _BluetoothPageState
                       width: 150,
                       height: 50,
                       decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage('assets/omnilink_logo.png'),
-                          fit: BoxFit.contain
-                        )
-                      ),
+                          image: DecorationImage(
+                              image: AssetImage('assets/omnilink_logo.png'),
+                              fit: BoxFit.contain)),
                     ),
                   ],
                 ),
-                decoration: BoxDecoration(color: Colors.blueGrey.withOpacity(0.6)),
+                decoration:
+                    BoxDecoration(color: Colors.blueGrey.withOpacity(0.6)),
               ),
               Card(
                 elevation: 5.0,
-                              child: ListTile(
-                  leading: Icon(Icons.settings,color: Colors.blue[800],),
-                  title: Text('Configurar',style: GoogleFonts.robotoMono(
-                            fontSize: 14.0,
-                            letterSpacing: 1.5,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500)),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.settings,
+                    color: Colors.blue[800],
+                  ),
+                  title: Text('Configurar',
+                      style: GoogleFonts.robotoMono(
+                          fontSize: 14.0,
+                          letterSpacing: 1.5,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500)),
+                  onTap: () async {
+                    if (controller.connectedDevice != "") {
+                      await controller.disconnectDevice();
+                      Modular.to.pop();
+                      Modular.to.pop();
+                    } else {
+                      Modular.to.pop();
+                      Modular.to.pop();
+                    }
+                  },
+                ),
+              ),
+              Card(
+                elevation: 5.0,
+                child: ListTile(
+                  leading: Icon(
+                    Icons.dashboard,
+                    color: Colors.blue[800],
+                  ),
+                  title: Text('Dashboard',
+                      style: GoogleFonts.robotoMono(
+                          fontSize: 14.0,
+                          letterSpacing: 1.5,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500)),
                   onTap: () {
-                if (controller.connectedDevice != "") {
-                  showCupertinoDialog(
-                      context: context,
-                      builder: (_) {
+                    if (controller.connectedDevice != "") {
+                      Modular.to.pop();
+                      Modular.to.pushNamed('/bluetooth/dashboard');
+                    } else {
+                      Modular.to.showDialog(builder: (_) {
                         return CupertinoAlertDialog(
                           title: Text(
                             'Aviso',
@@ -120,7 +117,7 @@ class _BluetoothPageState
                                 fontSize: 18.0),
                           ),
                           content: Text(
-                            'Clique em desconectar antes de sair desta tela.',
+                            'Conecte em um dispositivo antes de acessar o dashboard.',
                             style: GoogleFonts.sourceCodePro(
                                 wordSpacing: 1.5,
                                 fontSize: 14.0,
@@ -129,7 +126,6 @@ class _BluetoothPageState
                           actions: <Widget>[
                             FlatButton(
                               onPressed: () {
-                                Modular.to.pop();
                                 Modular.to.pop();
                               },
                               child: Text(
@@ -140,24 +136,7 @@ class _BluetoothPageState
                           ],
                         );
                       });
-                } else {
-                  Modular.to.pop();
-                  Modular.to.pop();
-                }
-                  },
-                ),
-              ),
-              Card(
-                elevation: 5.0,
-                              child: ListTile(
-                  leading: Icon(Icons.dashboard,color: Colors.blue[800],),
-                  title: Text('Dashboard',style: GoogleFonts.robotoMono(
-                            fontSize: 14.0,
-                            letterSpacing: 1.5,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500)),
-                  onTap: () {
-
+                    }
                   },
                 ),
               ),
@@ -199,124 +178,145 @@ class _BluetoothPageState
                   ? Column(
                       children: <Widget>[
                         SingleChildScrollView(
-                          child: Column(
-                            children: controller.devices.map((f) => f).toList(),
-                          ),
+                          child: Observer(builder: (_) {
+                            return (controller.connectedDevice == "")
+                                ? Column(
+                                    children: controller.devices
+                                        .map((f) => f)
+                                        .toList(),
+                                  )
+                                : Container();
+                          }),
                         ),
                         Observer(builder: (_) {
-                          if (controller.connectedDevice != "") {
-                            return Column(
-                              children: <Widget>[
-                                Container(
-                                  child: Theme(
-                                    data: Theme.of(context).copyWith(
-                                        cardColor:
-                                            Colors.white.withOpacity(0.16)),
-                                    child: ExpansionPanelList(
-                                      children: [
-                                        ExpansionPanel(
-                                            body: Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: AssetImage(
-                                                        'assets/bkg_fundo.png'),
-                                                    fit: BoxFit.cover),
-                                              ),
-                                              // color: Color.fromRGBO(
-                                              //     204, 204, 204, 1.0),
-                                              child: Column(
-                                                children: <Widget>[
-                                                  SizedBox(
-                                                    height: 12.5,
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: <Widget>[
-                                                      CardOptionWidget(
-                                                        option: 0,
-                                                      ),
-                                                      CardOptionWidget(
-                                                        option: 1,
-                                                      ),
-                                                      CardOptionWidget(
-                                                        option: 2,
-                                                      ),
-                                                      CardOptionWidget(
-                                                        option: 3,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: <Widget>[
-                                                      CardOptionWidget(
-                                                        option: 4,
-                                                      ),
-                                                      CardOptionWidget(
-                                                        option: 5,
-                                                      ),
-                                                      CardOptionWidget(
-                                                        option: 6,
-                                                      ),
-                                                      CardOptionWidget(
-                                                        option: 7,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            headerBuilder:
-                                                (BuildContext context,
-                                                    bool isExpanded) {
-                                              return Container(
-                                                padding: EdgeInsets.all(10),
-                                                alignment: Alignment.center,
-                                                child: AutoSizeText(
-                                                    (isExpanded ||
-                                                            controller
-                                                                    .selectedOption ==
-                                                                15)
-                                                        ? "Clique em algum botão abaixo para selecionar um tópico."
-                                                        : "${controller.mapOptions[controller.selectedOption]}",
-                                                    maxLines: 1,
-                                                    style:
-                                                        GoogleFonts.robotoMono(
-                                                            fontSize: 19.5,
-                                                            letterSpacing: 2.0,
-                                                            color: Colors
-                                                                .lightGreen,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                              );
-                                            },
-                                            canTapOnHeader: true,
-                                            isExpanded:
-                                                controller.expandPanelOptions),
-                                      ],
-                                      animationDuration:
-                                          Duration(milliseconds: 1300),
-                                      expansionCallback:
-                                          (int item, bool status) {
-                                        controller.setPanelExpand();
-                                      },
+                          return (controller.connectedDevice != "" &&
+                                  controller.selectedOption == 15)
+                              ? Expanded(
+                                  child: Center(
+                                    child: Text(
+                                      'Acesse o Dashboard no menu lateral para escolher um tópico.',
+                                      style: GoogleFonts.robotoMono(
+                                          fontSize: 17,
+                                          letterSpacing: 2.0,
+                                          color: Colors.lightGreen[700],
+                                          fontWeight: FontWeight.w400),
                                     ),
                                   ),
-                                ),
-                              ],
-                            );
-                          } else {
-                            return Container();
-                          }
+                                )
+                              : Container();
                         }),
+                        // Observer(builder: (_) {
+                        //   if (controller.connectedDevice != "") {
+                        //     return Column(
+                        //       children: <Widget>[
+                        //         Container(
+                        //           child: Theme(
+                        //             data: Theme.of(context).copyWith(
+                        //                 cardColor:
+                        //                     Colors.white.withOpacity(0.16)),
+                        //             child: ExpansionPanelList(
+                        //               children: [
+                        //                 ExpansionPanel(
+                        //                     body: Container(
+                        //                       width: MediaQuery.of(context)
+                        //                           .size
+                        //                           .width,
+                        //                       decoration: BoxDecoration(
+                        //                         image: DecorationImage(
+                        //                             image: AssetImage(
+                        //                                 'assets/bkg_fundo.png'),
+                        //                             fit: BoxFit.cover),
+                        //                       ),
+                        //                       child: Column(
+                        //                         children: <Widget>[
+                        //                           SizedBox(
+                        //                             height: 12.5,
+                        //                           ),
+                        //                           Row(
+                        //                             mainAxisAlignment:
+                        //                                 MainAxisAlignment
+                        //                                     .center,
+                        //                             children: <Widget>[
+                        //                               CardOptionWidget(
+                        //                                 option: 0,
+                        //                               ),
+                        //                               CardOptionWidget(
+                        //                                 option: 1,
+                        //                               ),
+                        //                               CardOptionWidget(
+                        //                                 option: 2,
+                        //                               ),
+                        //                               CardOptionWidget(
+                        //                                 option: 3,
+                        //                               ),
+                        //                             ],
+                        //                           ),
+                        //                           Row(
+                        //                             mainAxisAlignment:
+                        //                                 MainAxisAlignment
+                        //                                     .center,
+                        //                             children: <Widget>[
+                        //                               CardOptionWidget(
+                        //                                 option: 4,
+                        //                               ),
+                        //                               CardOptionWidget(
+                        //                                 option: 5,
+                        //                               ),
+                        //                               CardOptionWidget(
+                        //                                 option: 6,
+                        //                               ),
+                        //                               CardOptionWidget(
+                        //                                 option: 7,
+                        //                               ),
+                        //                             ],
+                        //                           ),
+                        //                         ],
+                        //                       ),
+                        //                     ),
+                        //                     headerBuilder:
+                        //                         (BuildContext context,
+                        //                             bool isExpanded) {
+                        //                       return Container(
+                        //                         padding: EdgeInsets.all(10),
+                        //                         alignment: Alignment.center,
+                        //                         child: AutoSizeText(
+                        //                             (isExpanded ||
+                        //                                     controller
+                        //                                             .selectedOption ==
+                        //                                         15)
+                        //                                 ? "Selecione um tópico acessando o Dashboard no menu lateral."
+                        //                                 : "${controller.mapOptions[controller.selectedOption]}",
+                        //                             maxLines: 1,
+                        //                             style:
+                        //                                 GoogleFonts.robotoMono(
+                        //                                     fontSize: 19.5,
+                        //                                     letterSpacing: 2.0,
+                        //                                     color: Colors
+                        //                                         .lightGreen,
+                        //                                     fontWeight:
+                        //                                         FontWeight
+                        //                                             .bold)),
+                        //                       );
+                        //                     },
+                        //                     canTapOnHeader: true,
+                        //                     isExpanded:
+                        //                         controller.expandPanelOptions),
+                        //               ],
+                        //               animationDuration:
+                        //                   Duration(milliseconds: 1300),
+                        //               expansionCallback:
+                        //                   (int item, bool status) {
+                        //                 controller.setPanelExpand();
+                        //               },
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ],
+                        //     );
+                        //   } else {
+                        //     return Container();
+                        //   }
+                        // }),
                         Observer(builder: (_) {
                           return Expanded(
                             child: AnimatedOpacity(

@@ -26,7 +26,7 @@ class CardOptionWidget extends StatelessWidget {
                 onTap: () {
                   controller.changeSegmentedOption(option);
                   controller.setOption(option);
-                  controller.setPanelExpand();
+                  Modular.to.pop();
                 },
                 child: Stack(
                   alignment: Alignment.center,

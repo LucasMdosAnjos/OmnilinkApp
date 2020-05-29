@@ -1,0 +1,2 @@
+lib/app/modules/bluetooth/pages/dashboard/dashboard_page.dart
+test/app/modules/bluetooth/pages/dashboard/dashboard_page_test.dart

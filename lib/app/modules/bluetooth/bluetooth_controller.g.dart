@@ -9,6 +9,36 @@ part of 'bluetooth_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$BluetoothController on _BluetoothControllerBase, Store {
+  final _$resultsAtom = Atom(name: '_BluetoothControllerBase.results');
+
+  @override
+  List<ScanResult> get results {
+    _$resultsAtom.reportRead();
+    return super.results;
+  }
+
+  @override
+  set results(List<ScanResult> value) {
+    _$resultsAtom.reportWrite(value, super.results, () {
+      super.results = value;
+    });
+  }
+
+  final _$rAtom = Atom(name: '_BluetoothControllerBase.r');
+
+  @override
+  ScanResult get r {
+    _$rAtom.reportRead();
+    return super.r;
+  }
+
+  @override
+  set r(ScanResult value) {
+    _$rAtom.reportWrite(value, super.r, () {
+      super.r = value;
+    });
+  }
+
   final _$contextAtom = Atom(name: '_BluetoothControllerBase.context');
 
   @override
@@ -194,6 +224,14 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
     });
   }
 
+  final _$disconnectDeviceAsyncAction =
+      AsyncAction('_BluetoothControllerBase.disconnectDevice');
+
+  @override
+  Future<void> disconnectDevice() {
+    return _$disconnectDeviceAsyncAction.run(() => super.disconnectDevice());
+  }
+
   final _$updateWidgetsAsyncAction =
       AsyncAction('_BluetoothControllerBase.updateWidgets');
 
@@ -217,6 +255,17 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
   }
 
   @override
+  void scanDevices() {
+    final _$actionInfo = _$_BluetoothControllerBaseActionController.startAction(
+        name: '_BluetoothControllerBase.scanDevices');
+    try {
+      return super.scanDevices();
+    } finally {
+      _$_BluetoothControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void addWidgetsDevices(List<ScanResult> results) {
     final _$actionInfo = _$_BluetoothControllerBaseActionController.startAction(
         name: '_BluetoothControllerBase.addWidgetsDevices');
@@ -233,17 +282,6 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
         name: '_BluetoothControllerBase.increment');
     try {
       return super.increment();
-    } finally {
-      _$_BluetoothControllerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setPanelExpand() {
-    final _$actionInfo = _$_BluetoothControllerBaseActionController.startAction(
-        name: '_BluetoothControllerBase.setPanelExpand');
-    try {
-      return super.setPanelExpand();
     } finally {
       _$_BluetoothControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -274,6 +312,8 @@ mixin _$BluetoothController on _BluetoothControllerBase, Store {
   @override
   String toString() {
     return '''
+results: ${results},
+r: ${r},
 context: ${context},
 writeCharac: ${writeCharac},
 ultimaRequisicao: ${ultimaRequisicao},
